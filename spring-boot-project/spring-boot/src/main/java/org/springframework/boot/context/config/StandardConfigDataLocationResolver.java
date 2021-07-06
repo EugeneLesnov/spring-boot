@@ -17,6 +17,8 @@
 package org.springframework.boot.context.config;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -240,7 +242,8 @@ public class StandardConfigDataLocationResolver
 	}
 
 	private boolean isDirectory(String resourceLocation) {
-		return resourceLocation.endsWith("/") || resourceLocation.endsWith(File.separator);
+		return Files.isDirectory(Path.of(resourceLocation))
+				|| resourceLocation.endsWith("/") || resourceLocation.endsWith(File.separator);
 	}
 
 	private List<StandardConfigDataResource> resolve(Set<StandardConfigDataReference> references) {

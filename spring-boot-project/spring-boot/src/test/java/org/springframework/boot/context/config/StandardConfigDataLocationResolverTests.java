@@ -32,8 +32,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -108,6 +107,12 @@ public class StandardConfigDataLocationResolverTests {
 		ConfigDataLocation location = ConfigDataLocation.of("file:src/test/resources/*/config/");
 		assertThatIllegalStateException().isThrownBy(() -> this.resolver.resolve(this.context, location))
 				.withMessageStartingWith("Location '").withMessageEndingWith("' must end with '*/'");
+	}
+
+	@Test
+	void resolveWhenLocationContainsConfigFile() {
+		ConfigDataLocation location = ConfigDataLocation.of("file:src/test/resources/config/config-not-directory/config");
+		assertThatNoException().isThrownBy(() -> this.resolver.resolve(this.context, location));
 	}
 
 	@Test
